@@ -20,6 +20,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { CookiesProvider } from "react-cookie";
 // React query
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// date-pickers
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/ar"; // Import Arabic locale
+
+
 
 // Create a client
 const qc = new QueryClient({
@@ -53,14 +59,16 @@ root.render(
   // <React.StrictMode>
   <CacheProvider value={cacheRtl}>
     <ThemeProvider theme={defaultTheme}>
-      <CookiesProvider>
-        <QueryClientProvider client={qc}>
-          <ToastContainer position="top-left" />
-          <ScopedCssBaseline>
-            <App />
-          </ScopedCssBaseline>
-        </QueryClientProvider>
-      </CookiesProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ar">
+        <CookiesProvider>
+          <QueryClientProvider client={qc}>
+            <ToastContainer position="top-left" />
+            <ScopedCssBaseline>
+              <App />
+            </ScopedCssBaseline>
+          </QueryClientProvider>
+        </CookiesProvider>
+      </LocalizationProvider>
     </ThemeProvider>
   </CacheProvider>
   // </React.StrictMode>

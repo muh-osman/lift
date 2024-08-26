@@ -3,10 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\AlbumController;
-use App\Http\Controllers\SheetController;
-use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\DoxController;
+use App\Http\Controllers\VisitController;
+use App\Http\Controllers\CustomerController;
 
 
 
@@ -21,6 +19,9 @@ Route::middleware('auth:sanctum')->group(function () {
         ];
     });
 
+    Route::get('/user/role/technician', [UserController::class, 'getUsersWithRole13']);
+    Route::post('/reset/technician/password', [UserController::class, 'resetTechnicianPassword']);
+
     // Logout Route (http://localhost:8000/api/logout)
     Route::post('/logout', [UserController::class, 'logout']);
 
@@ -28,49 +29,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/resend-verify-email', [UserController::class, 'resendVerifyEmail']);
 
 
-    // Teachers
-    Route::resource('teachers', TeacherController::class)->except(['index', 'show']);
+    // Customers
+    Route::get('/customers', [CustomerController::class, 'index']);
+    Route::post('/customers', [CustomerController::class, 'store']);
+    Route::get('/customers/{id}', [CustomerController::class, 'show']);
+    Route::post('/customers/{id}', [CustomerController::class, 'update']);
+    Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
+    Route::get('/customers/visit/today', [CustomerController::class, 'getCustomersToVisitToday']);
+    Route::get('/customers/ids/names', [CustomerController::class, 'getCustomerIdsAndNames']);
 
-    // Route for getting all teachers that associated-with-user
-    Route::get('/teachers-associated-with-user', [TeacherController::class, 'index']);
-
-    // Route for getting a teacher by ID
-    Route::get('/teachers/{id}', [TeacherController::class, 'show']);
-
-    // Search for teacher
-    Route::post('/teachers/search', [TeacherController::class, 'searchTeacherByName']);
-
-
-    // tables
-    Route::post('/tables', [SheetController::class, 'store']);
-    // Route::post('/tables/{id}', [SheetController::class, 'update']);
-    Route::match(['patch'], '/tables/{id}', [SheetController::class, 'update']);
-    Route::delete('/tables/{id}', [SheetController::class, 'destroy']);
-    Route::get('/tables-associated-with-user', [SheetController::class, 'index']);
-    Route::get('/tables/{id}', [SheetController::class, 'show']);
-    Route::post('/tables/search', [SheetController::class, 'searchTableByName']);
+    // Route::match(['patch'], '/customers/{id}', [CustomerController::class, 'update']);
+    // Route::get('/tables-associated-with-user', [SheetController::class, 'index']);
+    // Route::post('/tables/search', [SheetController::class, 'searchTableByName']);
 
 
-    // Album
-    Route::post('albums', [AlbumController::class, 'store']);
-    //
-    Route::get('/albums/teacher/{teacher_id}', [AlbumController::class, 'show']);
-    // Route::put('albums/{id}', [AlbumController::class, 'update']);
-    Route::delete('albums/{id}', [AlbumController::class, 'destroy']);
+    Route::post('/visits', [VisitController::class, 'store']);
 
-    // Dox
-    // Route to get all dox titles
-    Route::get('doxes-title-associated-with-user', [DoxController::class, 'index']);
-    // Route to get a single dox by ID
-    Route::get('doxes/{id}', [DoxController::class, 'show']);
-    // Route to create a new dox
-    Route::post('doxes', [DoxController::class, 'store']);
-    // Route to update an existing dox
-    Route::match(['patch'], '/doxes/{id}', [DoxController::class, 'update']);
-    // Route to delete a dox
-    Route::delete('doxes/{id}', [DoxController::class, 'destroy']);
-    // search
-    Route::post('/doxes/search', [DoxController::class, 'searchDoxByName']);
 
 });
 
@@ -95,6 +69,3 @@ Route::middleware('guest')->group(function () {
     // API route for resetting the password (http://localhost:8000/api/reset-password)
     Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('password.reset');
 });
-
-
-

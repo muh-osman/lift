@@ -3,31 +3,23 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 // API base
 import API from "./Api";
-// Cookies
-import { useCookies } from "react-cookie";
 // Toastify
 import { toast } from "react-toastify";
 
-export const useSignUpApi = () => {
+export const useResetTechnicianPasswordApi = () => {
   //
   const navigate = useNavigate();
-  // Cookies
-  const [cookies, setCookie] = useCookies(["token", "role"]);
 
   return useMutation({
     mutationFn: async (data) => {
-      const res = await API.post("api/register", data);
+      const res = await API.post("api/reset/technician/password", data);
       return res.data;
     },
 
-    onSuccess: (responseData) => {
-      if (responseData.user.role === 91) {
-        setCookie("role", responseData.user.role);
-        setCookie("token", responseData.token);
-        navigate("/", { replace: true });
-      } else {
-        navigate("/dashboard/technicians");
-      }
+    onSuccess: () => {
+      toast.success("Password have been reset.");
+
+        navigate("/dashboard/technicians", { replace: true });
     },
 
     onError: (err) => {

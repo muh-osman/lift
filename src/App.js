@@ -8,6 +8,8 @@ import {
 import Layout from "./Layout/Layout";
 import HomeLayout from "./Layout/HomeLayout";
 import Home from "./Pages/Home/Home";
+import AddVisit from "./Pages/AddVisit/AddVisit";
+import SelectClient from "./Pages/SelectClient/SelectClient";
 import LogIn from "./Pages/LogIn/LogIn";
 import SignUp from "./Pages/SignUp/SignUp";
 import VerifyEmail from "./Pages/VerifyEmail/VerifyEmail";
@@ -19,6 +21,10 @@ import DashboardLayout from "./Layout/DashboardLayout";
 
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Clients from "./Pages/Dashboard/Clients/Clients";
+import AddClient from "./Pages/Dashboard/AddClient/AddClient";
+import EditClient from "./Pages/Dashboard/EditClient/EditClient";
+import AddTechnician from "./Pages/Dashboard/AddTechnician/AddTechnician";
+import EditTechnician from "./Pages/Dashboard/EditTechnician/EditTechnician";
 import MaintenanceTimes from "./Pages/Dashboard/MaintenanceTimes/MaintenanceTimes";
 import Expirations from "./Pages/Dashboard/Expirations/Expirations";
 import Costs from "./Pages/Dashboard/Costs/Costs";
@@ -34,6 +40,8 @@ export default function App() {
 
         <Route element={<HomeLayout />}>
           <Route index element={<Home />} />
+          <Route path="add-visit/:id" element={<AddVisit />} />
+          <Route path="select-client" element={<SelectClient />} />
         </Route>
 
         <Route element={<NotAuth />}>
@@ -55,6 +63,13 @@ export default function App() {
             <Route path="expirations" element={<Expirations />} />
             <Route path="costs" element={<Costs />} />
             <Route path="technicians" element={<Technicians />} />
+
+
+            <Route path="add-client" element={<AddClient />} />
+            <Route path="edit-client/:id" element={<EditClient />} />
+
+            <Route path="add-technician" element={<AddTechnician />} />
+            <Route path="edit-technician/:id" element={<EditTechnician />} />
 
           </Route>
           {/* End protected route */}

@@ -28,9 +28,14 @@ class User extends Authenticatable implements CanResetPassword
         'email_sha1_hash',
     ];
 
-    public function doxes()
+    public function visits()
     {
-        return $this->hasMany(Dox::class);
+        return $this->hasMany(Visit::class);
+    }
+
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
     }
 
     /**

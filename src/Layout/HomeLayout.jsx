@@ -33,12 +33,12 @@ const drawerWidth = 240;
 const pages = [
   // {
   //   id: 1,
-  //   title: "المعرض",
+  //   title: "زيارات اليوم",
   //   path: "/",
   // },
   // {
   //   id: 2,
-  //   title: "الجداول",
+  //   title: "ادخال بيانات",
   //   path: "tables",
   // },
   // {
@@ -237,8 +237,8 @@ function DrawerAppBar(props) {
               >
                 {!cookies.token ? (
                   <Button
-                    // component={Link}
-                    // to={cookies.token ? "dashboard" : "login"}
+                    component={Link}
+                    to="login"
                     variant="contained"
                     sx={{
                       backgroundColor: "#fbfbfb",

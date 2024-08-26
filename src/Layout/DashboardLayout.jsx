@@ -21,12 +21,12 @@ import Stack from "@mui/material/Stack";
 // Image logo
 import logo from "../Assets/Images/logo.png";
 // MUI icons
-import TourIcon from '@mui/icons-material/Tour';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import EngineeringIcon from '@mui/icons-material/Engineering';
-import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import TourIcon from "@mui/icons-material/Tour";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 // import DeleteIcon from "@mui/icons-material/Delete";
 // React router
 import { Link, useLocation, Outlet, useParams } from "react-router-dom";
@@ -49,7 +49,7 @@ function ResponsiveDrawer(props) {
   const pages = [
     {
       id: 1,
-      title: "الزيارات",
+      title: "زيارات اليوم",
       path: "/dashboard",
       icon: <TourIcon sx={{ color: "#757575" }} />,
     },
@@ -61,7 +61,7 @@ function ResponsiveDrawer(props) {
     },
     {
       id: 3,
-      title: "أوقات الصيانة",
+      title: "مواعيد الصيانة",
       path: "/dashboard/maintenance-times",
       icon: <AccessTimeFilledIcon sx={{ color: "#757575" }} />,
     },
@@ -73,7 +73,7 @@ function ResponsiveDrawer(props) {
     },
     {
       id: 5,
-      title: "مبالغ الصيانة",
+      title: "مبالغ العقود",
       path: "/dashboard/costs",
       icon: <MonetizationOnIcon sx={{ color: "#757575" }} />,
     },
@@ -138,6 +138,16 @@ function ResponsiveDrawer(props) {
                   pathname === "/dashboard/costs") ||
                 (item.path === "/dashboard/technicians" &&
                   pathname === "/dashboard/technicians") ||
+                (item.path === "/dashboard/clients" &&
+                  pathname === "/dashboard/add-client") ||
+                (item.path === "/dashboard/clients" &&
+                  pathname === `/dashboard/edit-client/${id}`) ||
+                (item.path === "/dashboard/technicians" &&
+                  pathname === "/dashboard/add-technician") ||
+                (item.path === "/dashboard/technicians" &&
+                  pathname === `/dashboard/edit-technician/${id}`) ||
+
+
 
                 (item.path === "/dashboard" &&
                   pathname === "/dashboard/add-teacher") ||

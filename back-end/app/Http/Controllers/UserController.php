@@ -255,4 +255,56 @@ class UserController extends Controller
             ? response()->json(['message' => 'Your password has been reset.'], 200)
             : response()->json(['message' => 'Invalid token or email.'], 400);
     }
+
+    // all user with role 13
+    public function getUsersWithRole13()
+    {
+        try {
+            // Check if the authenticated user has role 91
+            if (Auth::user()->role !== 91) {
+                return response()->json(['message' => 'Unauthorized. You do not have permission to access this resource.'], 403);
+            }
+
+            // Fetch all users with role 13, including id and email
+            $users = User::where('role', 13)->get(['id', 'email']);
+
+            // Return the users' id and email
+            return response()->json($users, 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to retrieve users. ' . $e->getMessage()], 500);
+        }
+    }
+
+    // Reset password for user with role 13
+    public function resetTechnicianPassword(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'user_id' => 'required|exists:users,id', // Ensure the user exists
+            'new_password' => 'required|min:6', // Validate new password
+        ]);
+
+        // Check if the authenticated user has role 91
+        if (Auth::user()->role !== 91) {
+            return response()->json(['message' => 'Unauthorized. You do not have permission to access this resource.'], 403);
+        }
+
+        try {
+            // Find the user with role 13
+            $user = User::findOrFail($request->input('user_id'));
+
+            // Ensure the user has role 13
+            if ($user->role !== 13) {
+                return response()->json(['message' => 'The specified user does not have the required role.'], 403);
+            }
+
+            // Update the user's password
+            $user->password = Hash::make($request->input('new_password'));
+            $user->save();
+
+            return response()->json(['message' => 'Password has been reset successfully.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to reset password. ' . $e->getMessage()], 500);
+        }
+    }
 }
