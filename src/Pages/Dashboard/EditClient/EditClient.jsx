@@ -10,6 +10,8 @@ import MenuItem from "@mui/material/MenuItem";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import LinearProgress from "@mui/material/LinearProgress";
 import dayjs from "dayjs";
+// toast
+import { toast } from "react-toastify";
 // Api
 import useGetOneClientDataApi from "../../../API/useGetOneClientDataApi";
 import { useEditClientApi } from "../../../API/useEditClientApi";
@@ -69,7 +71,26 @@ export default function EditClient() {
     const validate = addFormRef.current.reportValidity();
     if (!validate) return;
 
-    const formData = new FormData(addFormRef.current);
+    let formData = new FormData(addFormRef.current);
+
+    // Date validation
+    if (contractEndDate && contractStartDate) {
+      const startDate = new Date(contractStartDate);
+      const endDate = new Date(contractEndDate);
+
+      if (endDate <= startDate) {
+        toast.warn("تاريخ نهاية العقد يجب أن يكون بعد تاريخ بداية العقد");
+        return;
+      }
+    }
+
+    const paid = parseFloat(formData.get("paid"));
+    const maintenanceValue = parseFloat(formData.get("maintenance_value"));
+
+    if (paid > maintenanceValue) {
+      toast.warn("المبلغ المدفوع أكبر من قيمة الصيانة");
+      return;
+    }
 
     // Use dayjs to format the dates
     const formattedStartDate = contractStartDate
@@ -226,7 +247,6 @@ export default function EditClient() {
             item
             xs={12}
             container
-            spacing={3}
             dir="rtl"
             justifyContent="space-between"
             margin={0}
@@ -244,6 +264,7 @@ export default function EditClient() {
                   textField: {
                     variant: "outlined",
                     fullWidth: true,
+                    required: true,
                   },
                 }}
               />
@@ -262,6 +283,7 @@ export default function EditClient() {
                   textField: {
                     variant: "outlined",
                     fullWidth: true,
+                    required: true,
                   },
                 }}
               />

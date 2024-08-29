@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import API from "./Api";
 
 export const fetchAllTechnicians = async () => {
-  const res = await API.get(`api/user/role/technician`);
+  const res = await API.get(`api/users/role/technician`);
   return res.data;
 };
 

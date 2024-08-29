@@ -24,9 +24,10 @@ export const useSignUpApi = () => {
       if (responseData.user.role === 91) {
         setCookie("role", responseData.user.role);
         setCookie("token", responseData.token);
-        navigate("/", { replace: true });
+        navigate("/dashboard", { replace: true });
       } else {
-        navigate("/dashboard/technicians");
+        // Create new technician (role 13)
+        navigate("/dashboard/technicians", { replace: true });
       }
     },
 

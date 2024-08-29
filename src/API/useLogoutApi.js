@@ -12,34 +12,27 @@ export const useLogoutApi = () => {
   // Cookies
   const [cookies, setCookie, removeCookie] = useCookies(["token", "role"]);
 
-
   return useMutation({
     mutationFn: async () => {
       const res = await API.post("api/logout");
-      removeCookie("role");
-      removeCookie("token");
       return res.data;
     },
 
     onSuccess: () => {
-      removeCookie("role");
-      removeCookie("token");
+      removeCookie("role", { path: "/" });
+      removeCookie("token", { path: "/" });
       qc.clear();
 
-      setTimeout(() => {
-        navigate("/login", { replace: true });
-      }, 2000);
+      navigate("/login", { replace: true });
     },
 
     onError: (err) => {
       qc.clear();
       console.error(err);
-      removeCookie("role");
-      removeCookie("token");
+      removeCookie("role", { path: "/" });
+      removeCookie("token", { path: "/" });
 
-      setTimeout(() => {
-        navigate("/login", { replace: true });
-      }, 1000);
+      navigate("/login", { replace: true });
     },
   });
 };

@@ -76,19 +76,78 @@ export default function AddVisit() {
         </div>
       )}
 
-      <div>
-        <p>اسم العميل: {client?.name}</p>
-        <p>رقم الهاتف: {client?.phone_number}</p>
-        <p>الحي: {client?.neighborhood}</p>
-        <p>الصيانة: {client?.maintenance_type}</p>
-        <p>قطع الغيار: {client?.spare_parts}</p>
-        <p>نوع الخدمة: {client?.service_type}</p>
-        <p>بداية العقد: {client?.contract_start_date}</p>
-        <p>نهاية العقد: {client?.contract_end_date}</p>
-        <p>قيمة الصيانة: {Math.floor(client?.maintenance_value)}</p>
-        <p>مدفوع: {Math.floor(client?.paid)}</p>
-        <p>غير مدفوع: {Math.floor(client?.unpaid)}</p>
-        <p>ملاحظات: {client?.notes}</p>
+      <div className={style.table_container} dir="rtl">
+        <table>
+          <tbody>
+            <tr>
+              <td>اسم العميل:</td>
+              <td>{client?.name}</td>
+            </tr>
+
+            <tr>
+              <td>رقم الهاتف:</td>
+              <td>{client?.phone_number}</td>
+            </tr>
+
+            <tr>
+              <td>الحي:</td>
+              <td>{client?.neighborhood}</td>
+            </tr>
+
+            <tr>
+              <td>الصيانة:</td>
+              <td>{client?.maintenance_type}</td>
+            </tr>
+
+            <tr>
+              <td>قطع الغيار:</td>
+              <td>{client?.spare_parts}</td>
+            </tr>
+
+            <tr>
+              <td>نوع الخدمة:</td>
+              <td>{client?.service_type}</td>
+            </tr>
+
+            <tr>
+              <td>بداية العقد:</td>
+              <td>{client?.contract_start_date}</td>
+            </tr>
+
+            <tr>
+              <td>نهاية العقد:</td>
+              <td>{client?.contract_end_date}</td>
+            </tr>
+
+            <tr>
+              <td>قيمة الصيانة:</td>
+              <td>
+                {client?.maintenance_value !== undefined
+                  ? Math.floor(client.maintenance_value)
+                  : ""}
+              </td>
+            </tr>
+
+            <tr>
+              <td>مدفوع:</td>
+              <td>
+                {client?.paid !== undefined ? Math.floor(client.paid) : ""}
+              </td>
+            </tr>
+
+            <tr>
+              <td>غير مدفوع:</td>
+              <td>
+                {client?.unpaid !== undefined ? Math.floor(client.unpaid) : ""}
+              </td>
+            </tr>
+
+            <tr>
+              <td>ملاحظات:</td>
+              <td>{client?.notes}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <Divider />

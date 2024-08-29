@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ];
     });
 
-    Route::get('/user/role/technician', [UserController::class, 'getUsersWithRole13']);
+    Route::get('/users/role/technician', [UserController::class, 'getUsersWithRole13']);
     Route::post('/reset/technician/password', [UserController::class, 'resetTechnicianPassword']);
 
     // Logout Route (http://localhost:8000/api/logout)

@@ -21,14 +21,28 @@ const columns = [
   { field: "maintenance_type", headerName: "الصيانة", flex: 1, minWidth: 100 },
   { field: "spare_parts", headerName: "قطع الغيار", flex: 1, minWidth: 100 },
   { field: "service_type", headerName: "نوع الخدمة", flex: 1, minWidth: 100 },
-  { field: "contract_start_date", headerName: "بداية العقد", flex: 1, minWidth: 125 },
-  { field: "contract_end_date", headerName: "نهاية العقد", flex: 1, minWidth: 125 },
-  { field: "maintenance_value", headerName: "قيمة الصيانة", flex: 1, minWidth: 100 },
+  {
+    field: "contract_start_date",
+    headerName: "بداية العقد",
+    flex: 1,
+    minWidth: 125,
+  },
+  {
+    field: "contract_end_date",
+    headerName: "نهاية العقد",
+    flex: 1,
+    minWidth: 125,
+  },
+  {
+    field: "maintenance_value",
+    headerName: "قيمة الصيانة",
+    flex: 1,
+    minWidth: 100,
+  },
   { field: "paid", headerName: "مدفوع", flex: 1, minWidth: 100 },
   { field: "unpaid", headerName: "غير مدفوع", flex: 1, minWidth: 100 },
   { field: "notes", headerName: "ملاحظات", flex: 1, minWidth: 275 },
 ];
-
 
 export default function Clients() {
   const { data: AllClients, fetchStatus } = useGetAllClientsApi();
@@ -45,6 +59,10 @@ export default function Clients() {
   };
 
   const navigate = useNavigate();
+  const addBtn = () => {
+    navigate(`/dashboard/add-client`);
+  };
+
   const editBtn = () => {
     if (selectedRowId) {
       navigate(`/dashboard/edit-client/${selectedRowId}`);
@@ -103,17 +121,20 @@ export default function Clients() {
       )}
 
       <Stack
-        sx={{ pt: 2, pb: 4, maxWidth: "617px", margin: "auto" }}
+        sx={{ pb: 3, maxWidth: "617px", margin: "auto" }}
         spacing={2}
-        direction="row"
         justifyContent="center"
-        alignItems="center"
+        direction={{ xs: "column", sm: "row" }}
+        alignItems="stretch"
       >
-        <Link to={"/dashboard/add-client"} style={{ flex: 1 }}>
-          <Button sx={{ width: "100%" }} size="large" variant="outlined">
-            اضافة
-          </Button>
-        </Link>
+        <Button
+          sx={{ width: "100%", flex: 1 }}
+          size="large"
+          variant="outlined"
+          onClick={addBtn}
+        >
+          اضافة
+        </Button>
 
         <Button
           sx={{ width: "100%", flex: 1 }}
@@ -136,7 +157,13 @@ export default function Clients() {
         </Button>
       </Stack>
 
-      <div style={{ height: "calc(100vh - 202px)", width: "100%" }}>
+      <div
+        style={{
+          height: "calc(100vh - 178px)",
+          width: "100%",
+          overflow: "auto",
+        }}
+      >
         <DataGrid
           rows={rows}
           columns={columns}
@@ -149,6 +176,7 @@ export default function Clients() {
           checkboxSelection
           disableMultipleRowSelection
           onRowSelectionModelChange={handleSelectionChange}
+          style={{ width: "100%", height: "100%", overflowX: "auto" }}
         />
       </div>
     </div>

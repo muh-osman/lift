@@ -31,6 +31,11 @@ export default function Technicians() {
   };
 
   const navigate = useNavigate();
+
+  const addBtn = () => {
+    navigate(`/dashboard/add-technician`);
+  };
+
   const editBtn = () => {
     if (selectedRowId) {
       navigate(`/dashboard/edit-technician/${selectedRowId}`);
@@ -60,17 +65,20 @@ export default function Technicians() {
       )}
 
       <Stack
-        sx={{ pt: 2, pb: 4, maxWidth: "617px", margin: "auto" }}
+        sx={{ pb: 3, maxWidth: "617px", margin: "auto" }}
         spacing={2}
-        direction="row"
         justifyContent="center"
-        alignItems="center"
+        direction={{ xs: "column", sm: "row" }}
+        alignItems="stretch"
       >
-        <Link to={"/dashboard/add-technician"} style={{ flex: 1 }}>
-          <Button sx={{ width: "100%" }} size="large" variant="outlined">
-            اضافة
-          </Button>
-        </Link>
+        <Button
+          sx={{ width: "100%", flex: 1 }}
+          size="large"
+          variant="outlined"
+          onClick={addBtn}
+        >
+          اضافة فني جديد
+        </Button>
 
         <Button
           sx={{ width: "100%", flex: 1 }}
