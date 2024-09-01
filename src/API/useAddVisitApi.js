@@ -15,7 +15,7 @@ export const useAddVisitApi = () => {
     },
 
     onSuccess: () => {
-      toast.success("Added successfully.");
+      toast.success("تم الصيانة");
       navigate("/");
     },
 

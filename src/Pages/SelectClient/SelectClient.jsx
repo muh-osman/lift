@@ -2,7 +2,6 @@ import style from "./SelectClient.module.scss";
 // React
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 // MUI
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -21,7 +20,8 @@ export default function SelectClient() {
   const navigate = useNavigate();
   const handleChange = (e) => {
     setSelectedClientId(e.target.value);
-    navigate(`/add-visit/${e.target.value}`);
+    const dataToSend = { maintenance: "عطل" };
+    navigate(`/add-visit/${e.target.value}`, { state: dataToSend });
   };
 
   return (
@@ -31,6 +31,16 @@ export default function SelectClient() {
           <LinearProgress />
         </div>
       )}
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h2>زيارة صيانة غير مجدولة</h2>
+      </div>
 
       <Box
         component="form"

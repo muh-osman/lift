@@ -1,12 +1,10 @@
 import style from "./Home.module.scss";
 import { useEffect } from "react";
-// React router
 import { useNavigate } from "react-router-dom";
 // MUI
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
-import { Divider } from "@mui/material";
 // Cookies
 import { useCookies } from "react-cookie";
 // API
@@ -21,31 +19,21 @@ export default function Home() {
   const {
     data: allClientsToVisitToday,
     fetchStatus,
-    isPending,
-    isSuccess,
+    isError,
   } = useGetAllClientsToVisitToday();
 
-  const navigate = useNavigate();
   useEffect(() => {
-    if (cookies.role === 91) {
-      navigate("/dashboard", { replace: true });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isSuccess) {
+    if (fetchStatus === "idle" && isError === false) {
       if (allClientsToVisitToday.length === 0 && cookies.role === 13) {
-        toast.success("لا يوجد زيارات مجدولة اليوم");
+        toast.success("لا يوجد زيارات مجدولة لليوم");
       }
     }
-  }, [isSuccess]);
+  }, [fetchStatus]);
 
+  const navigate = useNavigate();
   const scheduledVisitBtn = (id) => {
-    navigate(`/add-visit/${id}`);
-  };
-
-  const unscheduledVisitBtn = () => {
-    navigate(`/select-client`);
+    const dataToSend = { maintenance: "صيانة دورية" };
+    navigate(`/add-visit/${id}`, { state: dataToSend });
   };
 
   const rowsBtns =
@@ -54,7 +42,7 @@ export default function Home() {
         key={id}
         sx={{ width: "100%", flex: 1 }}
         size="large"
-        variant="contained"
+        variant="outlined"
         onClick={() => scheduledVisitBtn(id)}
       >
         {name}
@@ -71,26 +59,6 @@ export default function Home() {
             </div>
           )}
 
-          <Stack
-            sx={{ pt: 1, pb: 4, maxWidth: "617px", margin: "auto" }}
-            spacing={2}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Button
-              sx={{ width: "100%", flex: 1 }}
-              size="large"
-              color="secondary"
-              variant="outlined"
-              onClick={unscheduledVisitBtn}
-            >
-              زيارة غير مجدول
-            </Button>
-          </Stack>
-
-          <Divider />
-
           <div
             style={{
               display: "flex",
@@ -98,7 +66,7 @@ export default function Home() {
               justifyContent: "center",
             }}
           >
-            <h2 style={{ marginTop: "37px" }}>الزيارات المجدولة اليوم</h2>
+            <h2>الزيارات المجدولة لليوم</h2>
           </div>
 
           <Stack

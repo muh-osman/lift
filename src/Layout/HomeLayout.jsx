@@ -31,21 +31,16 @@ import { useLogoutApi } from "../API/useLogoutApi";
 const drawerWidth = 240;
 
 const pages = [
-  // {
-  //   id: 1,
-  //   title: "زيارات اليوم",
-  //   path: "/",
-  // },
-  // {
-  //   id: 2,
-  //   title: "ادخال بيانات",
-  //   path: "tables",
-  // },
-  // {
-  //   id: 3,
-  //   title: "المستندات",
-  //   path: "dox",
-  // },
+  {
+    id: 1,
+    title: "الرئيسية",
+    path: "/",
+  },
+  {
+    id: 2,
+    title: "زيارة غير مجدول",
+    path: "/select-client",
+  },
 ];
 
 function DrawerAppBar(props) {
@@ -95,14 +90,6 @@ function DrawerAppBar(props) {
             </ListItemButton>
           </ListItem>
         ))}
-
-        {cookies.role === 91 && (
-          <ListItem key="9999" to="dashboard" component={Link} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary="لوحة التحكم" />
-            </ListItemButton>
-          </ListItem>
-        )}
       </List>
     </Box>
   );
@@ -194,31 +181,18 @@ function DrawerAppBar(props) {
                 {pages.map(({ id, title, path }) => (
                   <ListItem key={id} to={path} component={Link} disablePadding>
                     <ListItemButton
-                      sx={{ textAlign: "center", color: "white" }}
+                      sx={{
+                        textAlign: "center",
+                        color: "white",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
                     >
                       <ListItemText primary={title} />
                     </ListItemButton>
                   </ListItem>
                 ))}
-
-                {cookies.role === 91 && (
-                  <ListItem
-                    key="9999"
-                    to="dashboard"
-                    component={Link}
-                    disablePadding
-                  >
-                    <ListItemButton
-                      sx={{
-                        textAlign: "center",
-                        color: "white",
-                        textWrap: "nowrap",
-                      }}
-                    >
-                      <ListItemText primary="لوحة التحكم" />
-                    </ListItemButton>
-                  </ListItem>
-                )}
               </List>
             </Box>
 

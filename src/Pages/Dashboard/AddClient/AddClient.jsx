@@ -176,11 +176,20 @@ export default function AddClient() {
                 },
               }}
             >
+              <MenuItem dir="rtl" value={"سنة"}>
+                سنة
+              </MenuItem>
+
+              <MenuItem dir="rtl" value={"سنتين"}>
+                سنتين
+              </MenuItem>
+
               <MenuItem dir="rtl" value={"عقد"}>
                 عقد
               </MenuItem>
-              <MenuItem dir="rtl" value={"سنتين"}>
-                سنتين
+
+              <MenuItem dir="rtl" value={"مفتوح"}>
+                مفتوح
               </MenuItem>
             </TextField>
           </Grid>

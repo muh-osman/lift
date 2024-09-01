@@ -7,7 +7,7 @@ export default function NotAuth() {
 
   // console.log(cookies.token);
 
-  return !cookies.role ? (
+  return !cookies.token ? (
     <Outlet />
   ) : cookies.role === 91 ? (
     <Navigate to="dashboard" />

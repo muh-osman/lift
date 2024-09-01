@@ -45,11 +45,6 @@ class VisitController extends Controller
             $file->move(public_path('images/visits'), $filename);
             // Create the URL for the image
             $visitData['image'] = asset('images/visits/' . $filename);
-        } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Image file is required',
-            ], 422);
         }
 
         $visit = Visit::create($visitData);

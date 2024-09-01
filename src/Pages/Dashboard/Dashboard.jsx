@@ -4,94 +4,71 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // MUI
 import LinearProgress from "@mui/material/LinearProgress";
-import { DataGrid } from "@mui/x-data-grid";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import { Divider } from "@mui/material";
 // API
-import useGetAllClientsToVisitToday from "../../API/useGetAllClientsToVisitToday";
+import useGetAllCustomersToVisitAndVisitedTodayApi from "../../API/useGetAllCustomersToVisitAndVisitedTodayApi";
 // toast
 import { toast } from "react-toastify";
 
-const columns = [
-  { field: "id", headerName: "ID", flex: 1, minWidth: 50 },
-  { field: "name", headerName: "اسم العميل", flex: 1, minWidth: 175 },
-  { field: "phone_number", headerName: "رقم الهاتف", flex: 1, minWidth: 110 },
-  { field: "neighborhood", headerName: "الحي", flex: 1, minWidth: 100 },
-  { field: "maintenance_type", headerName: "الصيانة", flex: 1, minWidth: 100 },
-  { field: "spare_parts", headerName: "قطع الغيار", flex: 1, minWidth: 100 },
-  { field: "service_type", headerName: "نوع الخدمة", flex: 1, minWidth: 100 },
-  {
-    field: "contract_start_date",
-    headerName: "بداية العقد",
-    flex: 1,
-    minWidth: 125,
-  },
-  {
-    field: "contract_end_date",
-    headerName: "نهاية العقد",
-    flex: 1,
-    minWidth: 125,
-  },
-  {
-    field: "maintenance_value",
-    headerName: "قيمة الصيانة",
-    flex: 1,
-    minWidth: 100,
-  },
-  { field: "paid", headerName: "مدفوع", flex: 1, minWidth: 100 },
-  { field: "unpaid", headerName: "غير مدفوع", flex: 1, minWidth: 100 },
-  { field: "notes", headerName: "ملاحظات", flex: 1, minWidth: 275 },
-];
-
 export default function Dashboard() {
   const {
-    data: AllClientsToVisitToday,
+    data: AllCustomersToVisitAndVisitedToday,
     fetchStatus,
-    isPending,
-    isSuccess,
-  } = useGetAllClientsToVisitToday();
+    isError,
+  } = useGetAllCustomersToVisitAndVisitedTodayApi();
 
   useEffect(() => {
-    if (isSuccess) {
-      if (AllClientsToVisitToday.length === 0) {
+    if (fetchStatus === "idle" && isError === false) {
+      if (AllCustomersToVisitAndVisitedToday.customers_to_visit_today.length === 0) {
         toast.success("لا يوجد زيارات مجدولة اليوم");
       }
+      if (AllCustomersToVisitAndVisitedToday.customers_visited_today.length === 0) {
+        toast.success("لم تتم زيارة أي عميل اليوم");
+      }
     }
-  }, [isSuccess]);
-
-  const [selectedRowId, setSelectedRowId] = useState(null);
-  // Get id of selected row
-  const handleSelectionChange = (newSelection) => {
-    setSelectedRowId(newSelection[0]);
-  };
+  }, [fetchStatus]);
 
   const navigate = useNavigate();
-  const scheduledVisitBtn = () => {
-    if (selectedRowId) {
-      navigate(`/add-visit/${selectedRowId}`);
-    } else {
-      toast.warn("اختر عميل");
-    }
+
+  const customersToVisitTodayHandle = (id) => {
+    navigate(`/dashboard/customer-to-visit-today/${id}`);
   };
 
-  const unscheduledVisitBtn = () => {
-    navigate(`/select-client`);
+  const customersVisitedTodayHandle = (id) => {
+    navigate(`/dashboard/customer-visited-today/${id}`);
   };
 
-  const rows =
-    AllClientsToVisitToday?.map((client) => ({
-      id: client.id,
-      name: client.name,
-      phone_number: client.phone_number,
-      neighborhood: client.neighborhood,
-      maintenance_type: client.maintenance_type,
-      spare_parts: client.spare_parts,
-      service_type: client.service_type,
-      contract_start_date: client.contract_start_date,
-      contract_end_date: client.contract_end_date,
-      maintenance_value: Math.floor(client.maintenance_value),
-      paid: Math.floor(client.paid),
-      unpaid: Math.floor(client.unpaid),
-      notes: client.notes,
-    })) || [];
+  const customersToVisitToday =
+    AllCustomersToVisitAndVisitedToday?.customers_to_visit_today?.map(
+      ({ id, name }) => (
+        <Button
+          key={id}
+          sx={{ width: "100%", flex: 1 }}
+          size="large"
+          variant="outlined"
+          onClick={() => customersToVisitTodayHandle(id)}
+        >
+          {name}
+        </Button>
+      )
+    ) || [];
+
+  const customersVisitedToday =
+    AllCustomersToVisitAndVisitedToday?.customers_visited_today?.map(
+      ({ id, name }) => (
+        <Button
+          key={id}
+          sx={{ width: "100%", flex: 1 }}
+          size="large"
+          variant="contained"
+          onClick={() => customersVisitedTodayHandle(id)}
+        >
+          {name}
+        </Button>
+      )
+    ) || [];
 
   return (
     <div className={style.container}>
@@ -101,25 +78,47 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div>
-        <p style={{ marginTop: 0, paddingRight: "6px" }}>الزيارات المجدولة اليوم</p>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h2>الزيارات المجدولة لليوم</h2>
       </div>
 
-      <div style={{ height: "calc(100vh - 152px)", width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 100 },
-            },
-          }}
-          pageSizeOptions={[10, 25, 50, 100]}
-          checkboxSelection
-          disableMultipleRowSelection
-          onRowSelectionModelChange={handleSelectionChange}
-        />
+      <Stack
+        sx={{ pt: 2, pb: 4, maxWidth: "617px", margin: "auto" }}
+        spacing={3}
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        {customersToVisitToday}
+      </Stack>
+
+      <Divider />
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h2>تمت الزيارة اليوم</h2>
       </div>
+
+      <Stack
+        sx={{ pt: 2, pb: 4, maxWidth: "617px", margin: "auto" }}
+        spacing={3}
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        {customersVisitedToday}
+      </Stack>
     </div>
   );
 }

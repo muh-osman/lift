@@ -146,6 +146,10 @@ function ResponsiveDrawer(props) {
                   pathname === "/dashboard/add-technician") ||
                 (item.path === "/dashboard/technicians" &&
                   pathname === `/dashboard/edit-technician/${id}`) ||
+                (item.path === "/dashboard" &&
+                  pathname === `/dashboard/customer-to-visit-today/${id}`) ||
+                (item.path === "/dashboard" &&
+                  pathname === `/dashboard/customer-visited-today/${id}`) ||
 
 
 

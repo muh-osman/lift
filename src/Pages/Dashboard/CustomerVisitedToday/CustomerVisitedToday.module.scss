@@ -6,8 +6,35 @@
   }
 
   input {
-    background-color: #fff;
-    font-size: 18px;
+    background-color: #fff !important;
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .start_contract_box {
+    padding-top: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 12px;
+
+    @media (max-width: 600px) {
+      padding-right: 0 !important;
+      padding-top: 0 !important;
+      padding-left: 0px;
+    }
+  }
+
+  .end_contract_box {
+    padding-top: 0 !important;
+    padding-right: 12px;
+
+    @media (max-width: 600px) {
+      padding-right: 0 !important;
+      padding-top: 24px !important;
+    }
   }
 }
 
@@ -39,7 +66,7 @@
     width: 100%;
   }
 
-  td{
+  td {
     border: 1px solid #dddddd;
     text-align: center;
     padding: 8px;

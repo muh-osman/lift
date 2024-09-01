@@ -17,9 +17,12 @@ import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import Auth from "./Utils/Auth";
 import NotAuth from "./Utils/NotAuth";
+import OnlyTechnicians from "./Utils/OnlyTechnicians";
 import DashboardLayout from "./Layout/DashboardLayout";
 
 import Dashboard from "./Pages/Dashboard/Dashboard";
+import CustomerToVisitToday from "./Pages/Dashboard/CustomersToVisitToday/CustomerToVisitToday";
+import CustomerVisitedToday from "./Pages/Dashboard/CustomerVisitedToday/CustomerVisitedToday";
 import Clients from "./Pages/Dashboard/Clients/Clients";
 import AddClient from "./Pages/Dashboard/AddClient/AddClient";
 import EditClient from "./Pages/Dashboard/EditClient/EditClient";
@@ -32,16 +35,17 @@ import Technicians from "./Pages/Dashboard/Technicians/Technicians";
 
 import NotFound from "./Pages/NotFound/NotFound";
 
-
 export default function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
 
-        <Route element={<HomeLayout />}>
-          <Route index element={<Home />} />
-          <Route path="add-visit/:id" element={<AddVisit />} />
-          <Route path="select-client" element={<SelectClient />} />
+        <Route element={<OnlyTechnicians />}>
+          <Route element={<HomeLayout />}>
+            <Route index element={<Home />} />
+            <Route path="add-visit/:id" element={<AddVisit />} />
+            <Route path="select-client" element={<SelectClient />} />
+          </Route>
         </Route>
 
         <Route element={<NotAuth />}>
@@ -57,13 +61,14 @@ export default function App() {
           {/* Start protected route */}
           <Route path="dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
+            <Route path="customer-to-visit-today/:id" element={<CustomerToVisitToday />} />
+            <Route path="customer-visited-today/:id" element={<CustomerVisitedToday />} />
 
             <Route path="clients" element={<Clients />} />
             <Route path="maintenance-times" element={<MaintenanceTimes />} />
             <Route path="expirations" element={<Expirations />} />
             <Route path="costs" element={<Costs />} />
             <Route path="technicians" element={<Technicians />} />
-
 
             <Route path="add-client" element={<AddClient />} />
             <Route path="edit-client/:id" element={<EditClient />} />

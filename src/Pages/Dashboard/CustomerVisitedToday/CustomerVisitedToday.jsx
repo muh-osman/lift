@@ -1,12 +1,10 @@
-import style from "./AddVisit.module.scss";
+import style from "./CustomerVisitedToday.module.scss";
 // React
-import { useParams, useLocation } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 // MUI
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import LoadingButton from "@mui/lab/LoadingButton";
 import MenuItem from "@mui/material/MenuItem";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Divider } from "@mui/material";
@@ -14,76 +12,25 @@ import { Divider } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 // Api
-import useGetOneClientDataApi from "../../API/useGetOneClientDataApi";
-import { useAddVisitApi } from "../../API/useAddVisitApi";
+import useGetOneClientDataApi from "../../../API/useGetOneClientDataApi";
+import useGetLastVisitTodayForCustomerApi from "../../../API/useGetLastVisitTodayForCustomerApi";
 
 export default function AddVisit() {
-  const location = useLocation();
-  const dataFromLastComponent = location.state?.maintenance;
-
-  // console.log(dataFromLastComponent);
-
-  let { id } = useParams();
-
   const {
     data: client,
     fetchStatus,
     isPending: isFetchCientPending,
   } = useGetOneClientDataApi();
 
-  const addFormRef = useRef();
-  const [addFormData, setAddFormData] = useState({
-    maintenance_type: dataFromLastComponent || "",
-    comments: "",
-    image: "",
-  });
-
-  const { mutate, data, isPending, isSuccess } = useAddVisitApi();
-
-  const handleInputChange = (e) => {
-    setAddFormData({
-      ...addFormData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setAddFormData({
-      ...addFormData,
-      image: file,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // required input
-    const validate = addFormRef.current.reportValidity();
-    if (!validate) return;
-    // Submit data
-
-    const formData = new FormData();
-    // Append all form data to the FormData object
-    Object.keys(addFormData).forEach((key) => {
-      // Check if the key is 'image' and if there is no image selected
-      if (key === "image" && !addFormData.image) {
-        return; // Skip appending the 'image' key if no image is selected
-      }
-      formData.append(key, addFormData[key]);
-    });
-    formData.append("customer_id", id);
-
-    mutate(formData);
-  };
-
-  const [isChecked, setIsChecked] = useState(false); // State for Checkbox
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked); // Update checkbox state
-  };
+  const {
+    data: visit,
+    fetchStatus: fetchVisitStatus,
+    isPending: isFetchVisitPending,
+  } = useGetLastVisitTodayForCustomerApi();
 
   return (
     <div className={style.container}>
-      {fetchStatus === "fetching" && (
+      {(fetchStatus === "fetching" || fetchVisitStatus === "fetching") && (
         <div className={style.progressContainer}>
           <LinearProgress />
         </div>
@@ -166,10 +113,8 @@ export default function AddVisit() {
       <Divider />
 
       <Box
-        ref={addFormRef}
         component="form"
         noValidate
-        onSubmit={handleSubmit}
         sx={{ m: "auto", mt: 4, maxWidth: "700px" }}
       >
         <Grid container spacing={3}>
@@ -181,9 +126,8 @@ export default function AddVisit() {
               required
               label="الصيانة"
               name="maintenance_type"
-              value={addFormData.maintenance_type}
-              onChange={handleInputChange}
-              disabled={isPending}
+              value={visit?.maintenance_type || ""} // Set the value from visit data
+              disabled={true}
             >
               <MenuItem dir="rtl" value={"صيانة دورية"}>
                 صيانة دورية
@@ -200,49 +144,32 @@ export default function AddVisit() {
               label="ملاحظات (اختياري)"
               type="text"
               name="comments"
-              disabled={isPending}
-              value={addFormData.skills}
-              onChange={handleInputChange}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              type="file"
-              name="image"
-              disabled={isPending}
-              onChange={handleImageChange}
-              dir="ltr"
+              disabled={true}
+              value={visit?.comments || ""}
             />
           </Grid>
 
           <Grid item xs={12}>
             {/* Checkbox to confirm action */}
             <FormControlLabel
-              control={
-                <Checkbox
-                  checked={isChecked}
-                  onChange={handleCheckboxChange}
-                  color="primary"
-                />
-              }
+              control={<Checkbox checked={true} color="primary" />}
               label="تم الصيانة"
+              disabled={true}
             />
           </Grid>
-        </Grid>
 
-        <LoadingButton
-          type="submit"
-          fullWidth
-          variant="contained"
-          disableRipple
-          loading={isPending}
-          disabled={!isChecked || isFetchCientPending}
-          sx={{ mt: 3, mb: 2, transition: "0.1s" }}
-        >
-          حفظ
-        </LoadingButton>
+          {visit?.image && (
+            <Grid item xs={12}>
+              <div>
+                <img
+                  style={{ width: "100%" }}
+                  src={visit?.image}
+                  alt="receipt"
+                />
+              </div>
+            </Grid>
+          )}
+        </Grid>
       </Box>
     </div>
   );

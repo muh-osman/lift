@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Visit;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
@@ -141,33 +144,127 @@ class CustomerController extends Controller
 
     /**
      * Get customers to visit today based on maintenance type.
+     *
+     * Contract NOT expired
+     * Return customer who have not had a visit in the last 30 days or more
+     *
      */
+
     public function getCustomersToVisitToday()
     {
+        // Get today's date
         $today = Carbon::today();
 
-        // Get customers that need to be visited today
-        $customersToVisit = Customer::where(function ($query) use ($today) {
-            // Monthly maintenance
-            $query->where('maintenance_type', 'شهري')
-                ->whereDate('contract_start_date', '<=', $today)
-                ->whereDate('contract_end_date', '>=', $today)
-                ->whereRaw('MOD(DATEDIFF(?, contract_start_date), 30) = 0', [$today]);
+        // Get customers whose contracts are not expired
+        $customers = Customer::where('contract_start_date', '<=', $today)
+            ->where('contract_end_date', '>=', $today)
+            ->get();
 
-            // Every two months maintenance
-            $query->orWhere(function ($subQuery) use ($today) {
-                $subQuery->where('maintenance_type', 'شهرين')
-                    ->whereDate('contract_start_date', '<=', $today)
-                    ->whereDate('contract_end_date', '>=', $today)
-                    ->whereRaw('MOD(DATEDIFF(?, contract_start_date), 60) = 0', [$today]);
-            });
-        })->get();
 
-        // Check if any customers were found
-        if ($customersToVisit->isEmpty()) {
-            return response()->json([], Response::HTTP_OK);
+        // Initialize an array to hold customer IDs who need a visit
+        $customersToVisit = [];
+
+        foreach ($customers as $customer) {
+
+            // Determine the visit period based on maintenance_type
+            $visitPeriod = null;
+
+            if ($customer->maintenance_type === "شهري") {
+                $visitPeriod = 30;
+            } elseif ($customer->maintenance_type === "شهرين") {
+                $visitPeriod = 60;
+            }
+
+
+            // Check if the customer has had a visit in the determined period, ignoring visits with maintenance_type "عطل"
+            $hasRecentVisit = Visit::where('customer_id', $customer->id)
+                ->where('created_at', '>=', $today->subDays($visitPeriod))
+                ->where('maintenance_type', '!=', 'عطل') // Ignore visits with maintenance_type "عطل"
+                ->exists();
+
+
+            // If the customer has not had a recent visit, check against contract_start_date
+            if (!$hasRecentVisit) {
+                // Convert contract_start_date to a Carbon instance for comparison
+                $contractStartDate = Carbon::parse($customer->contract_start_date);
+
+                $today = Carbon::today(); //Reset the $today variable
+
+                // Check if the contract_start_date is NOT within the visit period
+                $isContractInactive = $contractStartDate < $today->subDays($visitPeriod);
+
+                // If the contract_start_date is NOT within the visit period, add the customer to the list
+                if ($isContractInactive) { // Change this condition
+                    $customersToVisit[] = $customer;
+                }
+            }
+
+            // Reset the $today variable to the original value for the next iteration
+            $today = Carbon::today();
         }
 
+        Log::info('Customers to visit: ', $customersToVisit);
+
         return response()->json($customersToVisit, Response::HTTP_OK);
+    }
+
+
+    /**
+     * Get customers to visit today and customers who have visited today.
+     */
+    public function getCustomersToVisitAndVisitedToday()
+    {
+        // Get today's date
+        $today = Carbon::today();
+
+        // Get customers to visit today
+        $customersToVisit = $this->getCustomersToVisitToday()->getData();
+
+        // Get customers who have visited today
+        $visitedToday = Visit::whereDate('created_at', $today)
+            ->pluck('customer_id')
+            ->unique();
+
+        // Retrieve the customer details for those who have visited today
+        $customersVisitedToday = Customer::whereIn('id', $visitedToday)->get();
+
+        // Prepare the response
+        $response = [
+            'customers_to_visit_today' => $customersToVisit,
+            'customers_visited_today' => $customersVisitedToday,
+        ];
+
+        return response()->json($response, Response::HTTP_OK);
+    }
+
+
+
+    /**
+     * Get the last visit that happened today for a specific customer.
+     *
+     * @param int $customerId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getLastVisitTodayForCustomer($customerId)
+    {
+        // Find the customer to ensure it exists
+        $customer = Customer::find($customerId);
+        if (!$customer) {
+            return response()->json(['error' => 'Customer not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Get the last visit for the specified customer that happened today
+        $lastVisitToday = Visit::where('customer_id', $customerId)
+            ->whereDate('created_at', Carbon::today())
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        // Check if there is a last visit today
+        if (!$lastVisitToday) {
+            return response()->json(['message' => 'No visits found today for this customer'], Response::HTTP_OK);
+        }
+
+        // Return the last visit details
+        return response()->json($lastVisitToday, Response::HTTP_OK);
     }
 }

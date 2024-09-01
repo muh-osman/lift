@@ -37,6 +37,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
     Route::get('/customers/visit/today', [CustomerController::class, 'getCustomersToVisitToday']);
     Route::get('/customers/ids/names', [CustomerController::class, 'getCustomerIdsAndNames']);
+    Route::get('/customers/visit/today/and/visited/today', [CustomerController::class, 'getCustomersToVisitAndVisitedToday']);
+    Route::get('/last/visit/for/customer/{customerId}/today', [CustomerController::class, 'getLastVisitTodayForCustomer']);
+
 
     // Route::match(['patch'], '/customers/{id}', [CustomerController::class, 'update']);
     // Route::get('/tables-associated-with-user', [SheetController::class, 'index']);
@@ -44,8 +47,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::post('/visits', [VisitController::class, 'store']);
-
-
 });
 
 

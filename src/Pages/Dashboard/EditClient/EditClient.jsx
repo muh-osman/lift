@@ -327,7 +327,7 @@ export default function EditClient() {
               type="text"
               name="notes"
               disabled={isPending || isFetchCientPending}
-              value={clientData.notes}
+              value={clientData.notes || ""}
               onChange={handleInputChange}
             />
           </Grid>
