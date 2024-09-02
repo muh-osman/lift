@@ -28,6 +28,25 @@ export default function AddVisit() {
     isPending: isFetchVisitPending,
   } = useGetLastVisitTodayForCustomerApi();
 
+  // Function to format the date in Arabic (Saudi Arabia)
+  const formatDateAR = (isoDate) => {
+    const date = new Date(isoDate);
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+      calendar: "gregory",
+    };
+    // Format the date in Arabic
+    const arabicDate = new Intl.DateTimeFormat("ar-SA", options).format(date);
+
+    // Replace Arabic numerals with Western numerals
+    return arabicDate.replace(/[٠-٩]/g, (d) => d.charCodeAt(0) - 1632);
+  };
+
   return (
     <div className={style.container}>
       {(fetchStatus === "fetching" || fetchVisitStatus === "fetching") && (
@@ -153,7 +172,9 @@ export default function AddVisit() {
             {/* Checkbox to confirm action */}
             <FormControlLabel
               control={<Checkbox checked={true} color="primary" />}
-              label="تم الصيانة"
+              label={`تم الصيانة اليوم: ${
+                visit?.created_at ? formatDateAR(visit.created_at) : ""
+              }`}
               disabled={true}
             />
           </Grid>

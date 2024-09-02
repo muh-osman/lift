@@ -1,7 +1,7 @@
 import style from "./Clients.module.scss";
 import { useState, useEffect } from "react";
 // React router
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // MUI
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -163,7 +163,7 @@ export default function Clients() {
       notes: client.notes,
     })) || [];
 
-  //
+  // Responsive table
   const [containerWidth, setContainerWidth] = useState(
     window.innerWidth < 600 ? window.innerWidth - 48 : "100%"
   );
@@ -191,13 +191,7 @@ export default function Clients() {
 
   return (
     <div className={style.container}>
-      {fetchStatus === "fetching" && (
-        <div className={style.progressContainer}>
-          <LinearProgress />
-        </div>
-      )}
-
-      {isPending && (
+      {(fetchStatus === "fetching" || isPending) && (
         <div className={style.progressContainer}>
           <LinearProgress />
         </div>

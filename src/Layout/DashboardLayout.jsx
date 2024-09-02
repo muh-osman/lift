@@ -61,7 +61,7 @@ function ResponsiveDrawer(props) {
     },
     {
       id: 3,
-      title: "مواعيد الصيانة",
+      title: "زيارات العميل",
       path: "/dashboard/maintenance-times",
       icon: <AccessTimeFilledIcon sx={{ color: "#757575" }} />,
     },

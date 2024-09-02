@@ -1,7 +1,7 @@
 import style from "./Technicians.module.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // React router
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // MUI
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -13,8 +13,14 @@ import useGetAllTechniciansApi from "../../../API/useGetAllTechniciansApi";
 import { toast } from "react-toastify";
 
 const columns = [
-  { field: "id", headerName: "ID", minWidth: 50 },
-  { field: "email", headerName: "البريد الالكتروني", flex: 1, minWidth: 110 },
+  { field: "id", headerName: "ID", width: 18, sortable: false },
+  {
+    field: "email",
+    headerName: "البريد الالكتروني",
+    flex: 1,
+    minWidth: 110,
+    sortable: false,
+  },
 ];
 
 export default function Technicians() {
@@ -50,15 +56,35 @@ export default function Technicians() {
       email: technician.email,
     })) || [];
 
+  // Responsive table
+  const [containerWidth, setContainerWidth] = useState(
+    window.innerWidth < 600 ? window.innerWidth - 48 : "100%"
+  );
+
+  const updateContainerWidth = () => {
+    if (window.innerWidth < 600) {
+      setContainerWidth(window.innerWidth - 48);
+    } else {
+      setContainerWidth("100%");
+    }
+  };
+
+  useEffect(() => {
+    // Set initial width
+    updateContainerWidth();
+
+    // Update width on window resize
+    window.addEventListener("resize", updateContainerWidth);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", updateContainerWidth);
+    };
+  }, []);
+
   return (
     <div className={style.container}>
-      {fetchStatus === "fetching" && (
-        <div className={style.progressContainer}>
-          <LinearProgress />
-        </div>
-      )}
-
-      {isPending && (
+      {(fetchStatus === "fetching" || isPending) && (
         <div className={style.progressContainer}>
           <LinearProgress />
         </div>
@@ -91,7 +117,12 @@ export default function Technicians() {
         </Button>
       </Stack>
 
-      <div style={{ height: "calc(100vh - 202px)", width: "100%" }}>
+      <div
+        className={style.datagrid_container}
+        style={{
+          width: containerWidth, // Set width dynamically
+        }}
+      >
         <DataGrid
           rows={rows}
           columns={columns}
@@ -103,7 +134,12 @@ export default function Technicians() {
           pageSizeOptions={[10, 25, 50, 100]}
           checkboxSelection
           disableMultipleRowSelection
+          disableColumnFilter // Disable filtering
+          disableColumnSort // Disable sorting
+          disableMultipleColumnSorting // Disable multiple column sorting
+          disableColumnMenu // Hide column menu
           onRowSelectionModelChange={handleSelectionChange}
+          style={{ width: "100%", height: "100%", overflowX: "auto" }}
         />
       </div>
     </div>
