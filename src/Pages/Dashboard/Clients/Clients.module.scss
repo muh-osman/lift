@@ -26,3 +26,12 @@
     top: 56px;
   }
 }
+
+//
+.datagrid_container {
+  height: calc(100vh - 178px);
+
+  @media (max-width: 600px) {
+    height: calc(100vh - 287px);
+  }
+}
