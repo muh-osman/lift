@@ -39,6 +39,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/customers/ids/names', [CustomerController::class, 'getCustomerIdsAndNames']);
     Route::get('/customers/visit/today/and/visited/today', [CustomerController::class, 'getCustomersToVisitAndVisitedToday']);
     Route::get('/last/visit/for/customer/{customerId}/today', [CustomerController::class, 'getLastVisitTodayForCustomer']);
+    Route::get('/customers/almost/expiring/contracts', [CustomerController::class, 'getCustomersWithAlmostExpiringContracts']);
+    Route::get('/customers/expired/contracts', [CustomerController::class, 'getExpiredContracts']);
+
 
 
     // Route::match(['patch'], '/customers/{id}', [CustomerController::class, 'update']);

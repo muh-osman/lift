@@ -1,17 +1,11 @@
 import style from "./Costs.module.scss";
 import { useState, useEffect } from "react";
-// React router
-import { useNavigate } from "react-router-dom";
 // MUI
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
 import { DataGrid } from "@mui/x-data-grid";
 // API
 import useGetAllClientsApi from "../../../API/useGetAllClientsApi";
 import { useDeleteClientApi } from "../../../API/useDeleteClientApi";
-// toast
-import { toast } from "react-toastify";
 
 const columns = [
   { field: "id", headerName: "ID", flex: 1, minWidth: 50, sortable: false },
@@ -59,8 +53,9 @@ const columns = [
     renderCell: (params) => (
       <div
         style={{
-          backgroundColor: "#92d050",
+          backgroundColor: "#2e7d32",
           textAlign: "center",
+          color: "#fff",
         }}
       >
         {params.value}
@@ -76,8 +71,9 @@ const columns = [
     renderCell: (params) => (
       <div
         style={{
-          backgroundColor: "#92d050",
+          backgroundColor: "#2e7d32",
           textAlign: "center",
+          color: "#fff",
         }}
       >
         {params.value}
@@ -94,8 +90,8 @@ const columns = [
     renderCell: (params) => (
       <div
         style={{
-          backgroundColor: params.value > 0 ? "red" : "",
-          color: params.value > 0 ? "#fff" : "",
+          backgroundColor: params.value > 0 ? "#d32f2f" : "#2e7d32",
+          color: "#fff",
           textAlign: "center",
         }}
       >
@@ -119,12 +115,6 @@ export default function Clients() {
     isPending,
     isSuccess: isDeleteSuccess,
   } = useDeleteClientApi();
-
-  const [selectedRowId, setSelectedRowId] = useState(null);
-
-  const handleSelectionChange = (newSelection) => {
-    setSelectedRowId(newSelection[0]);
-  };
 
   const rows =
     AllClients?.map((client) => ({
@@ -195,7 +185,6 @@ export default function Clients() {
           disableColumnSort // Disable sorting
           disableMultipleColumnSorting // Disable multiple column sorting
           disableColumnMenu // Hide column menu
-          onRowSelectionModelChange={handleSelectionChange}
           style={{ width: "100%", height: "100%", overflowX: "auto" }}
         />
       </div>

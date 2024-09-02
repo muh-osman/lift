@@ -267,4 +267,46 @@ class CustomerController extends Controller
         // Return the last visit details
         return response()->json($lastVisitToday, Response::HTTP_OK);
     }
+
+
+    /**
+     * Get customers whose contracts will end within the next 30 days.
+     */
+    public function getCustomersWithAlmostExpiringContracts()
+    {
+        // Get today's date
+        $today = Carbon::today();
+
+        // Calculate the date 30 days from today
+        $endDate = $today->copy()->addDays(30);
+
+        // Get customers whose contract_end_date is between today and the calculated end date
+        $customers = Customer::where('contract_end_date', '>=', $today)
+            ->where('contract_end_date', '<=', $endDate)
+            ->orderBy('contract_end_date', 'asc') // Order by contract_end_date ascending
+            ->get();
+
+        // Return the customers in a JSON response
+        return response()->json($customers, Response::HTTP_OK);
+    }
+
+
+    /**
+     * Get customers whose contracts have expired.
+     */
+    public function getExpiredContracts()
+    {
+        // Get today's date
+        $today = Carbon::today();
+
+        // Get customers whose contract_end_date is less than today
+        // Order by contract_end_date from older to newer
+        $customers = Customer::where('contract_end_date', '<', $today)
+            ->orderBy('contract_end_date', 'desc') // Order by contract_end_date ascending
+            ->get();
+
+
+        // Return the customers in a JSON response
+        return response()->json($customers, Response::HTTP_OK);
+    }
 }
