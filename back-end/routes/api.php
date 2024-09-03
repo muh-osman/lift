@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/last/visit/for/customer/{customerId}/today', [CustomerController::class, 'getLastVisitTodayForCustomer']);
     Route::get('/customers/almost/expiring/contracts', [CustomerController::class, 'getCustomersWithAlmostExpiringContracts']);
     Route::get('/customers/expired/contracts', [CustomerController::class, 'getExpiredContracts']);
+    Route::get('customers/{customerId}/visits', [CustomerController::class, 'getCustomerVisits']);
 
 
 

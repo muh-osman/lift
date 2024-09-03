@@ -1,27 +1,22 @@
 import style from "./SelectClient.module.scss";
 // React
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // MUI
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import LinearProgress from "@mui/material/LinearProgress";
-import MenuItem from "@mui/material/MenuItem";
 // API
 import useGetNameAndIdAllClientsApi from "../../API/useGetNameAndIdAllClientsApi";
 
 export default function SelectClient() {
-  const [selectedClientId, setSelectedClientId] = useState("");
-
-  const { data, isSuccess, isPending, fetchStatus } =
-    useGetNameAndIdAllClientsApi();
+  const { data, isSuccess, fetchStatus } = useGetNameAndIdAllClientsApi();
 
   const navigate = useNavigate();
-  const handleChange = (e) => {
-    setSelectedClientId(e.target.value);
-    const dataToSend = { maintenance: "عطل" };
-    navigate(`/add-visit/${e.target.value}`, { state: dataToSend });
+  const handleChange = (event, newValue) => {
+    if (newValue) {
+      const dataToSend = { maintenance: "عطل" };
+      navigate(`/add-visit/${newValue.id}`, { state: dataToSend });
+    }
   };
 
   return (
@@ -37,57 +32,28 @@ export default function SelectClient() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          color: "#757575",
         }}
       >
         <h2>زيارة صيانة غير مجدولة</h2>
       </div>
 
-      <Box
-        component="form"
-        noValidate
+      <Autocomplete
+        disablePortal
+        options={isSuccess ? data : []} // Assuming data is an array of client objects
+        getOptionLabel={(option) => option.name} // Assuming each client object has a 'name' property
+        onChange={handleChange}
+        renderInput={(params) => <TextField {...params} label="بحث" />}
         sx={{
-          mt: 3,
-          maxWidth: "400px",
-          marginLeft: "auto",
-          marginRight: "auto",
+          width: {
+            xs: 300,
+            md: 500,
+          },
+          margin: "auto",
+          marginTop: "16px",
+          backgroundColor: "#fff",
         }}
-      >
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12}>
-            <TextField
-              sx={{ backgroundColor: "#fff" }}
-              dir="rtl"
-              required
-              fullWidth
-              select
-              label="اختر عميل"
-              value={selectedClientId}
-              onChange={handleChange}
-              disabled={isPending}
-            >
-              {data === undefined && (
-                <MenuItem value="">
-                  <em>Loading...</em>
-                </MenuItem>
-              )}
-
-              {data?.length === 0 && (
-                <MenuItem value="">
-                  <em>No country to show.</em>
-                </MenuItem>
-              )}
-
-              {data !== undefined &&
-                data?.length !== 0 &&
-                data.map((client) => (
-                  <MenuItem dir="rtl" key={client.id} value={client.id}>
-                    {client.name}
-                  </MenuItem>
-                ))}
-            </TextField>
-          </Grid>
-        </Grid>
-      </Box>
+      />
     </div>
   );
 }

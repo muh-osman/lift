@@ -5,7 +5,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { DataGrid } from "@mui/x-data-grid";
 // API
 import useGetAllClientsApi from "../../../API/useGetAllClientsApi";
-import { useDeleteClientApi } from "../../../API/useDeleteClientApi";
 
 const columns = [
   { field: "id", headerName: "ID", flex: 1, minWidth: 50, sortable: false },
@@ -110,11 +109,6 @@ const columns = [
 
 export default function Clients() {
   const { data: AllClients, fetchStatus } = useGetAllClientsApi();
-  const {
-    mutate,
-    isPending,
-    isSuccess: isDeleteSuccess,
-  } = useDeleteClientApi();
 
   const rows =
     AllClients?.map((client) => ({
@@ -158,7 +152,7 @@ export default function Clients() {
 
   return (
     <div className={style.container}>
-      {(fetchStatus === "fetching" || isPending) && (
+      {fetchStatus === "fetching" && (
         <div className={style.progressContainer}>
           <LinearProgress />
         </div>

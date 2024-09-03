@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 // API base
 import API from "./Api";
 // Toastify
@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 export const useEditClientApi = () => {
   let { id } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (formData) => {
@@ -17,6 +18,8 @@ export const useEditClientApi = () => {
 
     onSuccess: () => {
       toast.success("Updated successfully.");
+      // Invalidate the query for the specific client to refetch the data
+      queryClient.invalidateQueries(["client", id]);
       navigate("/dashboard/clients");
     },
 

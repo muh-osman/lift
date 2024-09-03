@@ -21,10 +21,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (fetchStatus === "idle" && isError === false) {
-      if (AllCustomersToVisitAndVisitedToday.customers_to_visit_today.length === 0) {
+      if (
+        AllCustomersToVisitAndVisitedToday.customers_to_visit_today.length === 0
+      ) {
         toast.success("لا يوجد زيارات مجدولة اليوم");
       }
-      if (AllCustomersToVisitAndVisitedToday.customers_visited_today.length === 0) {
+      if (
+        AllCustomersToVisitAndVisitedToday.customers_visited_today.length === 0
+      ) {
         toast.success("لم تتم زيارة أي عميل اليوم");
       }
     }
@@ -83,6 +87,7 @@ export default function Dashboard() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          color: "#757575",
         }}
       >
         <h2>الزيارات المجدولة لليوم</h2>
@@ -105,6 +110,7 @@ export default function Dashboard() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          color: "#757575",
         }}
       >
         <h2>تمت الزيارة اليوم</h2>

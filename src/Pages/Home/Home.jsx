@@ -64,6 +64,7 @@ export default function Home() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              color: "#757575",
             }}
           >
             <h2>الزيارات المجدولة لليوم</h2>

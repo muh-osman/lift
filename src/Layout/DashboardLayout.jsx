@@ -132,6 +132,8 @@ function ResponsiveDrawer(props) {
                   pathname === "/dashboard/clients") ||
                 (item.path === "/dashboard/maintenance-times" &&
                   pathname === "/dashboard/maintenance-times") ||
+                (item.path === "/dashboard/maintenance-times" &&
+                  pathname === `/dashboard/visits/${id}`) ||
                 (item.path === "/dashboard/expirations" &&
                   pathname === "/dashboard/expirations") ||
                 (item.path === "/dashboard/costs" &&
@@ -149,34 +151,7 @@ function ResponsiveDrawer(props) {
                 (item.path === "/dashboard" &&
                   pathname === `/dashboard/customer-to-visit-today/${id}`) ||
                 (item.path === "/dashboard" &&
-                  pathname === `/dashboard/customer-visited-today/${id}`) ||
-
-
-
-                (item.path === "/dashboard" &&
-                  pathname === "/dashboard/add-teacher") ||
-                (item.path === "/dashboard" &&
-                  pathname === "/dashboard/edit-teacher") ||
-                (item.path === "/dashboard" &&
-                  pathname === `/dashboard/edit-teacher/album/${id}`) ||
-                (item.path === "/dashboard" &&
-                  pathname === "/dashboard/delete-teacher") ||
-                (item.path === "/dashboard/tables" &&
-                  pathname === "/dashboard/add-table") ||
-                (item.path === "/dashboard/tables" &&
-                  pathname === "/dashboard/edit-table") ||
-                (item.path === "/dashboard/tables" &&
-                  pathname === "/dashboard/delete-table") ||
-                (item.path === "/dashboard/tables" &&
-                  pathname === `/dashboard/edit-table/${id}`) ||
-                (item.path === "/dashboard/dox" &&
-                  pathname === "/dashboard/add-dox") ||
-                (item.path === "/dashboard/dox" &&
-                  pathname === "/dashboard/edit-dox") ||
-                (item.path === "/dashboard/dox" &&
-                  pathname === "/dashboard/delete-dox") ||
-                (item.path === "/dashboard/dox" &&
-                  pathname === `/dashboard/edit-dox/${id}`)
+                  pathname === `/dashboard/customer-visited-today/${id}`)
               }
             >
               <ListItemButton

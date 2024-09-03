@@ -309,4 +309,39 @@ class CustomerController extends Controller
         // Return the customers in a JSON response
         return response()->json($customers, Response::HTTP_OK);
     }
+
+
+    /**
+     * Get the visits of a specific customer.
+     *
+     * @param int $customerId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCustomerVisits($customerId)
+    {
+        // Find the customer to ensure it exists
+        $customer = Customer::find($customerId);
+        if (!$customer) {
+            return response()->json(['error' => 'Customer not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Get the visits for the specified customer and include the customer's name and user's email
+        $visits = Visit::where('customer_id', $customerId)
+            ->with(['customer:id,name', 'user:id,email']) // Eager load the customer and user relationships
+            ->get()
+            ->map(function ($visit) {
+                return [
+                    'id' => $visit->id,
+                    'user_email' => $visit->user->email, // ايميل الفني الذي قام بالزيارة
+                    'maintenance_type' => $visit->maintenance_type,
+                    'comments' => $visit->comments,
+                    'image' => $visit->image,
+                    'customer_name' => $visit->customer->name, // Include the customer's name
+                    'created_at' => $visit->created_at,
+                ];
+            });
+
+        // Return the visits in a JSON response
+        return response()->json($visits, Response::HTTP_OK);
+    }
 }

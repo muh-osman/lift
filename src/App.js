@@ -23,6 +23,7 @@ import DashboardLayout from "./Layout/DashboardLayout";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import CustomerToVisitToday from "./Pages/Dashboard/CustomersToVisitToday/CustomerToVisitToday";
 import CustomerVisitedToday from "./Pages/Dashboard/CustomerVisitedToday/CustomerVisitedToday";
+import Visits from "./Pages/Dashboard/Visits/Visits";
 import Clients from "./Pages/Dashboard/Clients/Clients";
 import AddClient from "./Pages/Dashboard/AddClient/AddClient";
 import EditClient from "./Pages/Dashboard/EditClient/EditClient";
@@ -64,15 +65,18 @@ export default function App() {
             <Route path="customer-to-visit-today/:id" element={<CustomerToVisitToday />} />
             <Route path="customer-visited-today/:id" element={<CustomerVisitedToday />} />
 
-            <Route path="clients" element={<Clients />} />
             <Route path="maintenance-times" element={<MaintenanceTimes />} />
-            <Route path="expirations" element={<Expirations />} />
-            <Route path="costs" element={<Costs />} />
-            <Route path="technicians" element={<Technicians />} />
+            <Route path="visits/:id" element={<Visits />} />
 
+            <Route path="expirations" element={<Expirations />} />
+
+            <Route path="costs" element={<Costs />} />
+
+            <Route path="clients" element={<Clients />} />
             <Route path="add-client" element={<AddClient />} />
             <Route path="edit-client/:id" element={<EditClient />} />
 
+            <Route path="technicians" element={<Technicians />} />
             <Route path="add-technician" element={<AddTechnician />} />
             <Route path="edit-technician/:id" element={<EditTechnician />} />
 
