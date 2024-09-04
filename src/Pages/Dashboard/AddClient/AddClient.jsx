@@ -249,6 +249,17 @@ export default function AddClient() {
               name="maintenance_value"
               required
               disabled={isPending}
+              InputProps={{
+                sx: {
+                  "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+                    {
+                      display: "none",
+                    },
+                  "& input[type=number]": {
+                    MozAppearance: "textfield",
+                  },
+                },
+              }}
             />
           </Grid>
 
@@ -260,6 +271,17 @@ export default function AddClient() {
               name="paid"
               required
               disabled={isPending}
+              InputProps={{
+                sx: {
+                  "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+                    {
+                      display: "none",
+                    },
+                  "& input[type=number]": {
+                    MozAppearance: "textfield",
+                  },
+                },
+              }}
             />
           </Grid>
 

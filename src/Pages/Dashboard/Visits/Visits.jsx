@@ -8,6 +8,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+// Toast
+import { toast } from "react-toastify";
 // API
 import useGetVisitsDataForOneClientApi from "../../../API/useGetVisitsDataForOneClientApi";
 
@@ -25,7 +27,19 @@ export default function Clients() {
     setSelectedImage("");
   };
 
-  const { data: allVisits, fetchStatus } = useGetVisitsDataForOneClientApi();
+  const {
+    data: allVisits,
+    fetchStatus,
+    isError,
+  } = useGetVisitsDataForOneClientApi();
+
+  useEffect(() => {
+    if (fetchStatus === "idle" && !isError) {
+      if (allVisits?.length === 0) {
+        toast.success("لا يوجد زيارات لهذا العميل بعد");
+      }
+    }
+  }, [fetchStatus]);
 
   // Function to format the date
   const formatDateAR = (isoDate) => {
@@ -158,7 +172,14 @@ export default function Clients() {
       )}
 
       <div>
-        <h2 style={{ color: "#757575", textAlign: "right", marginTop: 0 }}>
+        <h2
+          style={{
+            color: "#757575",
+            textAlign: "right",
+            marginTop: 0,
+            height: "36px",
+          }}
+        >
           {allVisits?.[0]?.customer_name}
         </h2>
       </div>

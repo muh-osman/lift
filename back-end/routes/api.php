@@ -46,8 +46,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Route::match(['patch'], '/customers/{id}', [CustomerController::class, 'update']);
-    // Route::get('/tables-associated-with-user', [SheetController::class, 'index']);
-    // Route::post('/tables/search', [SheetController::class, 'searchTableByName']);
 
 
     Route::post('/visits', [VisitController::class, 'store']);

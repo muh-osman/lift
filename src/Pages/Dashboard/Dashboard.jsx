@@ -1,5 +1,4 @@
 import style from "./Dashboard.module.scss";
-import { useState, useEffect } from "react";
 // React router
 import { useNavigate } from "react-router-dom";
 // MUI
@@ -16,23 +15,24 @@ export default function Dashboard() {
   const {
     data: AllCustomersToVisitAndVisitedToday,
     fetchStatus,
+    isSuccess,
     isError,
   } = useGetAllCustomersToVisitAndVisitedTodayApi();
 
-  useEffect(() => {
-    if (fetchStatus === "idle" && isError === false) {
-      if (
-        AllCustomersToVisitAndVisitedToday.customers_to_visit_today.length === 0
-      ) {
-        toast.success("لا يوجد زيارات مجدولة اليوم");
-      }
-      if (
-        AllCustomersToVisitAndVisitedToday.customers_visited_today.length === 0
-      ) {
-        toast.success("لم تتم زيارة أي عميل اليوم");
-      }
-    }
-  }, [fetchStatus]);
+  // useEffect(() => {
+  //   if (fetchStatus === "idle" && isError === false) {
+  //     if (
+  //       AllCustomersToVisitAndVisitedToday.customers_to_visit_today.length === 0
+  //     ) {
+  //       toast.success("لا يوجد زيارات مجدولة اليوم");
+  //     }
+  //     if (
+  //       AllCustomersToVisitAndVisitedToday.customers_visited_today.length === 0
+  //     ) {
+  //       toast.success("لم تتم زيارة أي عميل اليوم");
+  //     }
+  //   }
+  // }, [fetchStatus]);
 
   const navigate = useNavigate();
 
@@ -93,6 +93,15 @@ export default function Dashboard() {
         <h2>الزيارات المجدولة لليوم</h2>
       </div>
 
+      {fetchStatus !== "fetching" &&
+        isSuccess &&
+        AllCustomersToVisitAndVisitedToday.customers_to_visit_today.length ===
+          0 && (
+          <div style={{ textAlign: "center", color: "#757575" }}>
+            لا يوجد زيارات
+          </div>
+        )}
+
       <Stack
         sx={{ pt: 2, pb: 4, maxWidth: "617px", margin: "auto" }}
         spacing={3}
@@ -115,6 +124,15 @@ export default function Dashboard() {
       >
         <h2>تمت الزيارة اليوم</h2>
       </div>
+
+      {fetchStatus !== "fetching" &&
+        isSuccess &&
+        AllCustomersToVisitAndVisitedToday.customers_visited_today.length ===
+          0 && (
+          <div style={{ textAlign: "center", color: "#757575" }}>
+            لا يوجد زيارات
+          </div>
+        )}
 
       <Stack
         sx={{ pt: 2, pb: 4, maxWidth: "617px", margin: "auto" }}

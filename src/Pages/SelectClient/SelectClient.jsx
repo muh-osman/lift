@@ -15,7 +15,7 @@ export default function SelectClient() {
   const handleChange = (event, newValue) => {
     if (newValue) {
       const dataToSend = { maintenance: "عطل" };
-      navigate(`/add-visit/${newValue.id}`, { state: dataToSend });
+      navigate(`/add-visit/${newValue.id}?maintenance=damage`);
     }
   };
 

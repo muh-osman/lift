@@ -304,6 +304,17 @@ export default function EditClient() {
                   : ""
               }
               onChange={handleInputChange}
+              InputProps={{
+                sx: {
+                  "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+                    {
+                      display: "none",
+                    },
+                  "& input[type=number]": {
+                    MozAppearance: "textfield",
+                  },
+                },
+              }}
             />
           </Grid>
 
@@ -317,6 +328,17 @@ export default function EditClient() {
               disabled={isPending || isFetchCientPending}
               value={clientData.paid ? Math.floor(clientData.paid) : ""}
               onChange={handleInputChange}
+              InputProps={{
+                sx: {
+                  "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+                    {
+                      display: "none",
+                    },
+                  "& input[type=number]": {
+                    MozAppearance: "textfield",
+                  },
+                },
+              }}
             />
           </Grid>
 

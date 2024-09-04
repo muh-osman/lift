@@ -19,6 +19,7 @@ export default function Home() {
   const {
     data: allClientsToVisitToday,
     fetchStatus,
+    isSuccess,
     isError,
   } = useGetAllClientsToVisitToday();
 
@@ -32,8 +33,7 @@ export default function Home() {
 
   const navigate = useNavigate();
   const scheduledVisitBtn = (id) => {
-    const dataToSend = { maintenance: "صيانة دورية" };
-    navigate(`/add-visit/${id}`, { state: dataToSend });
+    navigate(`/add-visit/${id}?maintenance=scheduled`);
   };
 
   const rowsBtns =
@@ -69,6 +69,14 @@ export default function Home() {
           >
             <h2>الزيارات المجدولة لليوم</h2>
           </div>
+
+          {fetchStatus !== "fetching" &&
+            isSuccess &&
+            allClientsToVisitToday.length === 0 && (
+              <div style={{ textAlign: "center", color: "#757575" }}>
+                لا يوجد زيارات
+              </div>
+            )}
 
           <Stack
             sx={{ pt: 2, pb: 4, maxWidth: "617px", margin: "auto" }}

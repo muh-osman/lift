@@ -18,12 +18,11 @@ import useGetOneClientDataApi from "../../API/useGetOneClientDataApi";
 import { useAddVisitApi } from "../../API/useAddVisitApi";
 
 export default function AddVisit() {
-  const location = useLocation();
-  const dataFromLastComponent = location.state?.maintenance;
-
-  // console.log(dataFromLastComponent);
-
   let { id } = useParams();
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const maintenanceUrlQueryParam = queryParams.get("maintenance"); // scheduled OR damage
 
   const {
     data: client,
@@ -33,12 +32,13 @@ export default function AddVisit() {
 
   const addFormRef = useRef();
   const [addFormData, setAddFormData] = useState({
-    maintenance_type: dataFromLastComponent || "",
+    maintenance_type:
+      maintenanceUrlQueryParam === "scheduled" ? "صيانة دورية" : "عطل",
     comments: "",
     image: "",
   });
 
-  const { mutate, data, isPending, isSuccess } = useAddVisitApi();
+  const { mutate, isPending } = useAddVisitApi();
 
   const handleInputChange = (e) => {
     setAddFormData({
@@ -185,12 +185,16 @@ export default function AddVisit() {
               onChange={handleInputChange}
               disabled={isPending}
             >
-              <MenuItem dir="rtl" value={"صيانة دورية"}>
-                صيانة دورية
-              </MenuItem>
-              <MenuItem dir="rtl" value={"عطل"}>
-                عطل
-              </MenuItem>
+              {maintenanceUrlQueryParam === "scheduled" && (
+                <MenuItem dir="rtl" value={"صيانة دورية"}>
+                  صيانة دورية
+                </MenuItem>
+              )}
+              {maintenanceUrlQueryParam === "damage" && (
+                <MenuItem dir="rtl" value={"عطل"}>
+                  عطل
+                </MenuItem>
+              )}
             </TextField>
           </Grid>
 
