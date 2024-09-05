@@ -36,7 +36,7 @@ export default function Clients() {
   useEffect(() => {
     if (fetchStatus === "idle" && !isError) {
       if (allVisits?.length === 0) {
-        toast.success("لا يوجد زيارات لهذا العميل بعد");
+        toast.success("لا توجد زيارات لهذا العميل بعد");
       }
     }
   }, [fetchStatus]);

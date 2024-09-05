@@ -24,7 +24,7 @@ export default function Dashboard() {
   //     if (
   //       AllCustomersToVisitAndVisitedToday.customers_to_visit_today.length === 0
   //     ) {
-  //       toast.success("لا يوجد زيارات مجدولة اليوم");
+  //       toast.success("لا توجد زيارات مجدولة اليوم");
   //     }
   //     if (
   //       AllCustomersToVisitAndVisitedToday.customers_visited_today.length === 0
@@ -98,7 +98,7 @@ export default function Dashboard() {
         AllCustomersToVisitAndVisitedToday.customers_to_visit_today.length ===
           0 && (
           <div style={{ textAlign: "center", color: "#757575" }}>
-            لا يوجد زيارات
+            لا توجد زيارات
           </div>
         )}
 
@@ -130,7 +130,7 @@ export default function Dashboard() {
         AllCustomersToVisitAndVisitedToday.customers_visited_today.length ===
           0 && (
           <div style={{ textAlign: "center", color: "#757575" }}>
-            لا يوجد زيارات
+            لا توجد زيارات
           </div>
         )}
 

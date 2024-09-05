@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     if (fetchStatus === "idle" && isError === false) {
       if (allClientsToVisitToday.length === 0 && cookies.role === 13) {
-        toast.success("لا يوجد زيارات مجدولة لليوم");
+        toast.success("لا توجد زيارات مجدولة لليوم");
       }
     }
   }, [fetchStatus]);
@@ -74,7 +74,7 @@ export default function Home() {
             isSuccess &&
             allClientsToVisitToday.length === 0 && (
               <div style={{ textAlign: "center", color: "#757575" }}>
-                لا يوجد زيارات
+                لا توجد زيارات
               </div>
             )}
 
