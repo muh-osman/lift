@@ -27,6 +27,7 @@ export default function AddVisit() {
   const {
     data: client,
     fetchStatus,
+    isSuccess,
     isPending: isFetchCientPending,
   } = useGetOneClientDataApi();
 
@@ -157,7 +158,14 @@ export default function AddVisit() {
 
             <tr>
               <td>ملاحظات:</td>
-              <td>{client?.notes}</td>
+              <td>
+                {isSuccess &&
+                  (client?.notes ? (
+                    client.notes
+                  ) : (
+                    <span style={{ color: "#757575" }}>لا توجد ملاحظات</span>
+                  ))}
+              </td>
             </tr>
           </tbody>
         </table>

@@ -13,13 +13,34 @@ import useGetAllTechniciansApi from "../../../API/useGetAllTechniciansApi";
 import { toast } from "react-toastify";
 
 const columns = [
-  { field: "id", headerName: "ID", width: 18, sortable: false },
+  {
+    field: "id",
+    headerName: "ID",
+    width: 18,
+    sortable: false,
+    headerAlign: "center",
+    align: "center",
+  },
   {
     field: "email",
     headerName: "البريد الالكتروني",
     flex: 1,
     minWidth: 110,
     sortable: false,
+    headerAlign: "center",
+    align: "center",
+    renderCell: (params) => (
+      <div style={{ direction: "ltr" }}>{params.value}</div>
+    ),
+  },
+  {
+    field: "visits_count",
+    headerName: "عدد الزيارات هذا الشهر",
+    flex: 1,
+    minWidth: 50,
+    sortable: false,
+    headerAlign: "center",
+    align: "center",
   },
 ];
 
@@ -52,8 +73,9 @@ export default function Technicians() {
 
   const rows =
     AllTechnicians?.map((technician) => ({
-      id: technician.id,
-      email: technician.email,
+      id: technician?.id,
+      email: technician?.email,
+      visits_count: technician?.visits_count,
     })) || [];
 
   // Responsive table

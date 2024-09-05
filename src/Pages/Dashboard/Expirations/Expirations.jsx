@@ -51,13 +51,23 @@ export default function Expirations() {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 1, minWidth: 25, sortable: false },
+    {
+      field: "id",
+      headerName: "ID",
+      flex: 1,
+      minWidth: 25,
+      sortable: false,
+      headerAlign: "center",
+      align: "center",
+    },
     {
       field: "name",
       headerName: "اسم العميل",
       flex: 1,
       minWidth: 175,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "phone_number",
@@ -65,6 +75,8 @@ export default function Expirations() {
       flex: 1,
       minWidth: 110,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "neighborhood",
@@ -72,6 +84,8 @@ export default function Expirations() {
       flex: 1,
       minWidth: 100,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "maintenance_type",
@@ -79,6 +93,8 @@ export default function Expirations() {
       flex: 1,
       minWidth: 100,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "service_type",
@@ -86,6 +102,8 @@ export default function Expirations() {
       flex: 1,
       minWidth: 100,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "contract_start_date",
@@ -93,6 +111,8 @@ export default function Expirations() {
       flex: 1,
       minWidth: 125,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "contract_end_date",
@@ -100,6 +120,8 @@ export default function Expirations() {
       flex: 1,
       minWidth: 125,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
       renderCell: (params) => {
         const backgroundColor =
           activeButton === "almostExpired" ? "#ed6c02" : "#d32f2f";
@@ -108,7 +130,6 @@ export default function Expirations() {
             style={{
               backgroundColor,
               color: "#fff",
-              textAlign: "center",
             }}
           >
             {params.value}

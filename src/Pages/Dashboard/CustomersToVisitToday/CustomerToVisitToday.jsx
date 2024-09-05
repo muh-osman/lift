@@ -5,11 +5,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import useGetOneClientDataApi from "../../../API/useGetOneClientDataApi";
 
 export default function CustomerToVisitToday() {
-  const {
-    data: client,
-    fetchStatus,
-    isPending: isFetchCientPending,
-  } = useGetOneClientDataApi();
+  const { data: client, fetchStatus, isSuccess } = useGetOneClientDataApi();
 
   return (
     <div className={style.container}>
@@ -87,7 +83,14 @@ export default function CustomerToVisitToday() {
 
             <tr>
               <td>ملاحظات:</td>
-              <td>{client?.notes}</td>
+              <td>
+                {isSuccess &&
+                  (client?.notes ? (
+                    client.notes
+                  ) : (
+                    <span style={{ color: "#757575" }}>لا توجد ملاحظات</span>
+                  ))}
+              </td>
             </tr>
           </tbody>
         </table>

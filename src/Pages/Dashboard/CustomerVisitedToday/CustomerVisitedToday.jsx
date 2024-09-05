@@ -16,17 +16,10 @@ import useGetOneClientDataApi from "../../../API/useGetOneClientDataApi";
 import useGetLastVisitTodayForCustomerApi from "../../../API/useGetLastVisitTodayForCustomerApi";
 
 export default function AddVisit() {
-  const {
-    data: client,
-    fetchStatus,
-    isPending: isFetchCientPending,
-  } = useGetOneClientDataApi();
+  const { data: client, fetchStatus, isSuccess } = useGetOneClientDataApi();
 
-  const {
-    data: visit,
-    fetchStatus: fetchVisitStatus,
-    isPending: isFetchVisitPending,
-  } = useGetLastVisitTodayForCustomerApi();
+  const { data: visit, fetchStatus: fetchVisitStatus } =
+    useGetLastVisitTodayForCustomerApi();
 
   // Function to format the date in Arabic (Saudi Arabia)
   const formatDateAR = (isoDate) => {
@@ -123,7 +116,14 @@ export default function AddVisit() {
 
             <tr>
               <td>ملاحظات:</td>
-              <td>{client?.notes}</td>
+              <td>
+                {isSuccess &&
+                  (client?.notes ? (
+                    client.notes
+                  ) : (
+                    <span style={{ color: "#757575" }}>لا توجد ملاحظات</span>
+                  ))}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -164,7 +164,7 @@ export default function AddVisit() {
               type="text"
               name="comments"
               disabled={true}
-              value={visit?.comments || ""}
+              value={visit?.comments || "لا توجد ملاحظات"}
             />
           </Grid>
 

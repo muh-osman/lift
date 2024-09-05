@@ -74,13 +74,23 @@ export default function Clients() {
     })) || [];
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 1, minWidth: 50, sortable: false },
+    {
+      field: "id",
+      headerName: "ID",
+      flex: 1,
+      minWidth: 50,
+      sortable: false,
+      headerAlign: "center",
+      align: "center",
+    },
     {
       field: "maintenance_type",
       headerName: "نوع الزيارة",
       flex: 1,
       minWidth: 110,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "created_at",
@@ -88,10 +98,10 @@ export default function Clients() {
       flex: 1,
       minWidth: 175,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
       renderCell: (params) => (
-        <div style={{ direction: "ltr", textAlign: "left" }}>
-          {params.value}
-        </div>
+        <div style={{ direction: "ltr" }}>{params.value}</div>
       ),
     },
     {
@@ -100,6 +110,11 @@ export default function Clients() {
       flex: 1,
       minWidth: 175,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <div style={{ direction: "ltr" }}>{params.value}</div>
+      ),
     },
     {
       field: "comments",
@@ -107,6 +122,15 @@ export default function Clients() {
       flex: 1,
       minWidth: 175,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return params.value ? (
+          params.value
+        ) : (
+          <div style={{ color: "#757575" }}>لا توجد ملاحظات</div>
+        );
+      },
     },
     {
       field: "image",
@@ -114,6 +138,8 @@ export default function Clients() {
       flex: 1,
       minWidth: 125,
       sortable: false,
+      headerAlign: "center",
+      align: "center",
       renderCell: (params) => {
         const imageUrl = params.value;
 
@@ -131,7 +157,7 @@ export default function Clients() {
             onClick={() => handleImageClick(imageUrl)} // Handle click to open modal
           />
         ) : (
-          <div style={{ textAlign: "center", color: "#757575" }}>No Image</div>
+          <div style={{ color: "#757575" }}>لا توجد صورة</div>
         );
       },
     },

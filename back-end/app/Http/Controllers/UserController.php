@@ -265,15 +265,25 @@ class UserController extends Controller
                 return response()->json(['message' => 'Unauthorized. You do not have permission to access this resource.'], 403);
             }
 
-            // Fetch all users with role 13, including id and email
-            $users = User::where('role', 13)->get(['id', 'email']);
+            // Get the current month and year
+            $currentMonth = now()->month;
+            $currentYear = now()->year;
 
-            // Return the users' id and email
+            // Fetch all users with role 13, including id, email, and the number of visits this month
+            $users = User::where('role', 13)
+                ->withCount(['visits' => function ($query) use ($currentMonth, $currentYear) {
+                    $query->whereMonth('created_at', $currentMonth)
+                        ->whereYear('created_at', $currentYear);
+                }])
+                ->get(['id', 'email']);
+
+            // Return the users' id, email, and visit count
             return response()->json($users, 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to retrieve users. ' . $e->getMessage()], 500);
         }
     }
+
 
     // Reset password for user with role 13
     public function resetTechnicianPassword(Request $request)

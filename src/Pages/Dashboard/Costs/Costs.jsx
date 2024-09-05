@@ -7,13 +7,23 @@ import { DataGrid } from "@mui/x-data-grid";
 import useGetAllClientsApi from "../../../API/useGetAllClientsApi";
 
 const columns = [
-  { field: "id", headerName: "ID", flex: 1, minWidth: 50, sortable: false },
+  {
+    field: "id",
+    headerName: "ID",
+    flex: 1,
+    minWidth: 50,
+    sortable: false,
+    headerAlign: "center",
+    align: "center",
+  },
   {
     field: "name",
     headerName: "اسم العميل",
     flex: 1,
     minWidth: 175,
     sortable: false,
+    headerAlign: "center",
+    align: "center",
   },
   {
     field: "phone_number",
@@ -21,6 +31,8 @@ const columns = [
     flex: 1,
     minWidth: 110,
     sortable: false,
+    headerAlign: "center",
+    align: "center",
   },
   {
     field: "neighborhood",
@@ -28,6 +40,8 @@ const columns = [
     flex: 1,
     minWidth: 100,
     sortable: false,
+    headerAlign: "center",
+    align: "center",
   },
   {
     field: "contract_start_date",
@@ -35,6 +49,8 @@ const columns = [
     flex: 1,
     minWidth: 125,
     sortable: false,
+    headerAlign: "center",
+    align: "center",
   },
   {
     field: "contract_end_date",
@@ -42,6 +58,8 @@ const columns = [
     flex: 1,
     minWidth: 125,
     sortable: false,
+    headerAlign: "center",
+    align: "center",
   },
   {
     field: "maintenance_value",
@@ -49,11 +67,12 @@ const columns = [
     flex: 1,
     minWidth: 100,
     sortable: false,
+    headerAlign: "center",
+    align: "center",
     renderCell: (params) => (
       <div
         style={{
           backgroundColor: "#2e7d32",
-          textAlign: "center",
           color: "#fff",
         }}
       >
@@ -67,11 +86,12 @@ const columns = [
     flex: 1,
     minWidth: 100,
     sortable: false,
+    headerAlign: "center",
+    align: "center",
     renderCell: (params) => (
       <div
         style={{
           backgroundColor: "#2e7d32",
-          textAlign: "center",
           color: "#fff",
         }}
       >
@@ -85,13 +105,13 @@ const columns = [
     flex: 1,
     minWidth: 100,
     sortable: false,
-    cellClassName: "centerText",
+    headerAlign: "center",
+    align: "center",
     renderCell: (params) => (
       <div
         style={{
           backgroundColor: params.value > 0 ? "#d32f2f" : "#2e7d32",
           color: "#fff",
-          textAlign: "center",
         }}
       >
         {params.value}
@@ -104,6 +124,15 @@ const columns = [
     flex: 1,
     minWidth: 275,
     sortable: false,
+    headerAlign: "center",
+    align: "center",
+    renderCell: (params) => {
+      return params.value ? (
+        params.value
+      ) : (
+        <div style={{ color: "#757575" }}>لا توجد ملاحظات</div>
+      );
+    },
   },
 ];
 
@@ -112,16 +141,16 @@ export default function Clients() {
 
   const rows =
     AllClients?.map((client) => ({
-      id: client.id,
-      name: client.name,
-      phone_number: client.phone_number,
-      neighborhood: client.neighborhood,
-      contract_start_date: client.contract_start_date,
-      contract_end_date: client.contract_end_date,
-      maintenance_value: Math.floor(client.maintenance_value),
-      paid: Math.floor(client.paid),
-      unpaid: Math.floor(client.unpaid),
-      notes: client.notes,
+      id: client?.id,
+      name: client?.name,
+      phone_number: client?.phone_number,
+      neighborhood: client?.neighborhood,
+      contract_start_date: client?.contract_start_date,
+      contract_end_date: client?.contract_end_date,
+      maintenance_value: Math.floor(client?.maintenance_value),
+      paid: Math.floor(client?.paid),
+      unpaid: Math.floor(client?.unpaid),
+      notes: client?.notes,
     })) || [];
 
   // Responsive table
