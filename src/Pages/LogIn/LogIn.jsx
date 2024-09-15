@@ -27,6 +27,9 @@ import loginBg from "../../Assets/Images/loginBg.avif";
 export default function LogIn() {
   const [showPassword, setShowPassword] = React.useState(false);
 
+  const [email, setEmail] = React.useState("admin@mail.com");
+  const [password, setPassword] = React.useState("00266321");
+
   const formRef = React.useRef();
 
   const { mutate, isPending } = useLoginApi();
@@ -98,6 +101,8 @@ export default function LogIn() {
               autoComplete="email"
               autoFocus
               disabled={isPending}
+              value={email} // Set the value to the state
+              onChange={(e) => setEmail(e.target.value)} // Update state on change
             />
             <TextField
               margin="normal"
@@ -109,6 +114,10 @@ export default function LogIn() {
               id="password"
               autoComplete="current-password"
               disabled={isPending}
+
+              value={password} // Set the value to the state
+              onChange={(e) => setPassword(e.target.value)} // Update state on change
+
               InputLabelProps={{
                 shrink: true, // This keeps the label fixed
               }}
